@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE RED SHARINGAN — Uchiha Itachi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --night:#090b12;
+  --paper:#efe7da;
+  --ink:#141013;
+  --red:#b80d1e;
+  --crimson:#e3182d;
+}
+*{box-sizing:border-box}
+html{scrollbar-width:thin;scrollbar-color:#7d111d #0a0b10}
+body{
+  margin:0;
+  background:var(--night);
+  overflow-x:hidden;
+  color:var(--paper);
+  font-family:'Cinzel',Georgia,serif;
+}
+#track{height:700vh;position:relative}
+#viewport{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:hidden;
+  background:#090b12;
+}
+#skyBg{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 41%,#1c2438 0%,#0c101b 52%,#05060a 100%);
+  transition:filter .3s linear;
+}
+#crimsonSky{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 41%,#4a0710 0%,#1d0408 55%,#070204 100%);
+}
+#tsukuyomiRealm{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 18px,rgba(0,0,0,.38) 19px 21px),
+    radial-gradient(circle at 50% 41%,#7a0612 0%,#2b0206 54%,#050102 100%);
+}
+#world{
+  position:absolute;
+  inset:0;
+  isolation:isolate;
+  transform-origin:50% 42%;
+  will-change:transform;
+}
+#texture{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:25;
+  opacity:.18;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+}
+#moonWrap{
+  position:absolute;
+  left:50%;
+  top:41%;
+  width:min(68vw,78vh);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  z-index:6;
+  pointer-events:none;
+  will-change:transform,filter;
+  filter:drop-shadow(0 0 42px rgba(212,226,255,.35));
+}
+#sharinganSvg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+#moonOrb{filter:url(#moonwarp)}
+#atmosphere{
+  position:absolute;
+  inset:0;
+  z-index:9;
+  pointer-events:none;
+  overflow:hidden;
+}
+#atmosphere svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+.mist{
+  fill:#252d40;
+  stroke:none;
+  opacity:.48;
+  filter:url(#fogwarp);
+}
+.mist.dark{
+  fill:#0e121b;
+  stroke:none;
+  opacity:.62;
+}
+.shadowShape{
+  fill:#050609;
+  opacity:.72;
+  filter:url(#shadowwarp);
+}
+#slashes{
+  position:absolute;
+  inset:0;
+  z-index:11;
+  pointer-events:none;
+  opacity:0;
+}
+#slashes path{
+  fill:none;
+  stroke:#f6d9dc;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 8px #e3182d);
+}
+#rainLayer{
+  position:absolute;
+  inset:-20%;
+  z-index:11;
+  pointer-events:none;
+  opacity:0;
+  background:repeating-linear-gradient(
+    102deg,
+    transparent 0 26px,
+    rgba(220,40,55,.16) 27px 28px,
+    transparent 29px 58px
+  );
+  will-change:transform,opacity;
+}
+#crows{
+  position:absolute;
+  inset:0;
+  z-index:13;
+  pointer-events:none;
+}
+.crow{
+  fill:#070608;
+  stroke:#1e1619;
+  stroke-width:.8;
+  will-change:transform,opacity;
+}
+#figure{
+  position:absolute;
+  z-index:12;
+  left:50%;
+  bottom:0;
+  width:min(94vw,72vh);
+  aspect-ratio:600/640;
+  transform:translate(-50%,0);
+  transform-origin:50% 36.9%;
+  will-change:transform,opacity;
+  pointer-events:none;
+}
+#itachiSvg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+#wires{
+  will-change:transform;
+  transform-box:fill-box;
+  transform-origin:50% 50%;
+}
+#itachiEyes{will-change:filter,opacity}
+#bloodTear{will-change:transform,opacity}
+#rail{
+  position:absolute;
+  inset:0;
+  z-index:15;
+  pointer-events:none;
+  transform:translate3d(0,0,0);
+  will-change:transform;
+}
+.chapter{
+  position:absolute;
+  left:0;
+  width:100%;
+  height:100vh;
+  overflow:visible;
+}
+.label{
+  position:absolute;
+  left:6%;
+  top:11%;
+  font:11px/1.4 'DM Mono',monospace;
+  letter-spacing:.26em;
+  color:#e7dfd4;
+  text-shadow:0 1px 10px rgba(0,0,0,.9);
+}
+.label span{color:var(--crimson)}
+.bigtitle{
+  position:absolute;
+  top:15%;
+  left:6%;
+  font-size:clamp(34px,5.8vw,88px);
+  line-height:.92;
+  letter-spacing:-.04em;
+  text-shadow:0 2px 6px rgba(0,0,0,.98),0 6px 26px rgba(0,0,0,.95);
+}
+.bigtitle i{color:var(--crimson);font-style:normal}
+.paperline{
+  position:absolute;
+  border:1px solid rgba(239,231,218,.18);
+  pointer-events:none;
+}
+.paperline.a{left:5%;top:22%;width:22%;height:17%}
+.paperline.b{right:5%;bottom:18%;width:22%;height:16%}
+.caption{
+  position:absolute;
+  background:rgba(11,9,12,.84);
+  border:1px solid rgba(227,24,45,.45);
+  box-shadow:4px 4px 0 rgba(0,0,0,.65);
+  padding:14px 18px;
+  max-width:270px;
+  font:11px/1.75 'DM Mono',monospace;
+  color:#efe7da;
+  backdrop-filter:blur(3px);
+}
+.caption.left{left:6%;bottom:16%}
+.caption.right{right:6%;top:20%}
+.jp-vertical{
+  position:absolute;
+  right:3.5%;
+  top:18%;
+  writing-mode:vertical-rl;
+  font:12px 'DM Mono',monospace;
+  letter-spacing:.45em;
+  color:rgba(239,231,218,.65);
+  text-shadow:0 2px 8px rgba(0,0,0,.9);
+}
+.redscreen{
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 45%,#36030a 0%,#0b0204 75%);
+  opacity:1;
+}
+#curtain{
+  position:absolute;
+  inset:0;
+  z-index:18;
+  pointer-events:none;
+  opacity:0;
+  background:
+    radial-gradient(circle at 50% 45%,transparent 0%,rgba(8,2,4,.85) 70%,#040102 100%),
+    repeating-linear-gradient(108deg,#080406 0 12px,#32060d 14px 20px,#8c0b1a 22px 32px);
+}
+#last{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(90vw,780px);
+  color:#f5ede2;
+  font-size:clamp(30px,5.8vw,86px);
+  line-height:1.05;
+  letter-spacing:-.03em;
+  opacity:0;
+  z-index:19;
+  text-align:center;
+  text-shadow:0 0 28px rgba(184,13,30,.75);
+}
+#last .sub{
+  display:block;
+  margin-top:16px;
+  font:12px/1.8 'DM Mono',monospace;
+  letter-spacing:.28em;
+  color:#d9b5b8;
+}
+#guide{
+  position:fixed;
+  z-index:30;
+  left:3%;
+  bottom:24px;
+  font:10px 'DM Mono',monospace;
+  letter-spacing:.18em;
+  color:rgba(239,231,218,.78);
+  text-shadow:0 1px 6px #000;
+}
+#meter{
+  position:fixed;
+  z-index:30;
+  right:3%;
+  bottom:24px;
+  font:10px 'DM Mono',monospace;
+  letter-spacing:.18em;
+  color:rgba(239,231,218,.88);
+  text-shadow:0 1px 6px #000;
+}
+#bar{
+  position:fixed;
+  z-index:31;
+  top:0;
+  left:0;
+  height:3px;
+  background:linear-gradient(90deg,#8c0b1a,#e3182d);
+  box-shadow:0 0 10px rgba(227,24,45,.8);
+  width:0;
+}
+#overlay{
+  position:fixed;
+  z-index:50;
+  inset:0;
+  background:radial-gradient(circle at 50% 42%,#24060b 0%,#0b090c 62%,#040406 100%);
+  color:#efe7da;
+  display:grid;
+  place-content:center;
+  text-align:center;
+  padding:24px;
+  transition:opacity .65s,visibility .65s;
+}
+#overlay.hide{opacity:0;visibility:hidden}
+#overlay h1{
+  font-size:clamp(46px,10vw,132px);
+  font-weight:400;
+  line-height:.92;
+  letter-spacing:-.05em;
+  margin:14px 0;
+}
+#overlay p{
+  font:11px/1.9 'DM Mono',monospace;
+  letter-spacing:.22em;
+  color:#d9cfc4;
+  margin:6px 0;
+}
+.emblem{
+  width:58px;
+  height:58px;
+  margin:0 auto 12px;
+  opacity:.92;
+}
+button{
+  background:transparent;
+  color:#efe7da;
+  border:1px solid rgba(239,231,218,.65);
+  padding:15px 34px;
+  margin:24px auto 0;
+  cursor:pointer;
+  font:11px 'DM Mono',monospace;
+  letter-spacing:.22em;
+  transition:background .25s,border-color .25s,box-shadow .25s;
+}
+button:hover{
+  background:var(--red);
+  border-color:var(--crimson);
+  box-shadow:0 0 24px rgba(227,24,45,.55);
+}
+@media(max-width:650px){
+  #moonWrap{width:92vw;top:40%}
+  #figure{width:96vw}
+  .bigtitle{top:16%;font-size:38px}
+  .caption{font-size:9.5px;max-width:175px;padding:10px 12px}
+  .caption.right{right:4%;top:12%}
+  .caption.left{left:4%;bottom:13%}
+  .label{top:8%;left:4%;font-size:10px}
+  .jp-vertical{right:2%;top:22%;font-size:10px}
+  .paperline{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  #world,#rail,#figure,#moonWrap{will-change:auto}
+}
+</style>
+</head>
+<body>
+
+<svg aria-hidden="true" width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="fogwarp" x="-40%" y="-60%" width="180%" height="220%">
+      <feTurbulence id="fogNoise" type="fractalNoise" baseFrequency="0.008 0.02" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap id="fogDisplace" in="SourceGraphic" in2="noise" scale="30" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="shadowwarp" x="-40%" y="-40%" width="180%" height="180%">
+      <feTurbulence id="shadowNoise" type="fractalNoise" baseFrequency="0.015 0.018" numOctaves="2" seed="9" result="noise"/>
+      <feDisplacementMap id="shadowDisplace" in="SourceGraphic" in2="noise" scale="14"/>
+    </filter>
+    <filter id="moonwarp" x="-25%" y="-25%" width="150%" height="150%">
+      <feTurbulence id="moonNoise" type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="5" result="noise"/>
+      <feDisplacementMap id="moonDisplace" in="SourceGraphic" in2="noise" scale="5"/>
+    </filter>
+    <filter id="eyeGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="3.2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="paleMoonGrad" cx="44%" cy="42%" r="58%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#e5edf7"/>
+      <stop offset="86%" stop-color="#b8c6db"/>
+      <stop offset="100%" stop-color="#8b9ab4"/>
+    </radialGradient>
+    <radialGradient id="crimsonEyeGrad" cx="50%" cy="50%" r="52%">
+      <stop offset="0%" stop-color="#ff2e42"/>
+      <stop offset="38%" stop-color="#c90c20"/>
+      <stop offset="78%" stop-color="#7c0512"/>
+      <stop offset="100%" stop-color="#220105"/>
+    </radialGradient>
+    <radialGradient id="mangekyoCoreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff384c"/>
+      <stop offset="70%" stop-color="#b80d1e"/>
+      <stop offset="100%" stop-color="#3b0209"/>
+    </radialGradient>
+    <linearGradient id="tearGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff2b40"/>
+      <stop offset="65%" stop-color="#a80819"/>
+      <stop offset="100%" stop-color="#4e0209"/>
+    </linearGradient>
+    <clipPath id="moonClip">
+      <circle cx="200" cy="200" r="172"/>
+    </clipPath>
+  </defs>
+</svg>
+
+<div id="bar"></div>
+
+<div id="overlay">
+  <svg class="emblem" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="44" fill="none" stroke="#c51e31" stroke-width="2.5"/>
+    <path d="M22 48 A28 28 0 0 1 78 48 Z" fill="#c51e31"/>
+    <path d="M22 52 A28 28 0 0 0 78 52 L60 52 L60 72 L40 72 L40 52 Z" fill="#efe7da"/>
+  </svg>
+  <p>UCHIHA CLAN MASSACRE — INTERACTIVE MANGA</p>
+  <h1>THE <span style="color:#c51e31">RED</span><br>SHARINGAN.</h1>
+  <p>赤い写輪眼 — うちはイタチ<br>ONE NIGHT · ONE BLOODLINE · ONE BURDEN</p>
+  <button id="enter">AWAKEN THE EYE ↓</button>
+</div>
+
+<main id="track">
+  <div id="viewport">
+    <div id="skyBg"></div>
+    <div id="crimsonSky"></div>
+    <div id="tsukuyomiRealm"></div>
+
+    <div id="world">
+      <!-- Giant Moon + Sharingan Core directly behind Itachi -->
+      <div id="moonWrap">
+        <svg id="sharinganSvg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <g id="moonOrb">
+            <!-- Pale Full Moon -->
+            <g id="moonSurface" clip-path="url(#moonClip)">
+              <circle cx="200" cy="200" r="172" fill="url(#paleMoonGrad)"/>
+              <g opacity=".22" fill="#73839e">
+                <circle cx="140" cy="135" r="36"/>
+                <circle cx="245" cy="152" r="48"/>
+                <circle cx="185" cy="245" r="54"/>
+                <circle cx="268" cy="252" r="28"/>
+                <circle cx="115" cy="210" r="24"/>
+                <ellipse cx="215" cy="95" rx="42" ry="18"/>
+              </g>
+              <circle cx="200" cy="200" r="172" fill="none" stroke="#ffffff" stroke-width="4" opacity=".5"/>
+            </g>
+
+            <!-- Crimson Sharingan Layer -->
+            <g id="sharinganLayer" opacity="0" clip-path="url(#moonClip)">
+              <circle cx="200" cy="200" r="172" fill="url(#crimsonEyeGrad)"/>
+              <!-- Radial Iris Striations -->
+              <g id="irisFibers" stroke="#1b0205" stroke-width="1.3" opacity=".32"></g>
+              <!-- Specular Moonlight Reflection -->
+              <ellipse cx="144" cy="128" rx="34" ry="18" transform="rotate(-28 144 128)" fill="#ffdce0" opacity=".16"/>
+              <!-- Outer Limbal Ring -->
+              <circle cx="200" cy="200" r="167" fill="none" stroke="#0d0406" stroke-width="11"/>
+              <!-- Tracking Orbit Ring -->
+              <circle id="tomoeRing" cx="200" cy="200" r="88" fill="none" stroke="#110406" stroke-width="3" opacity=".82"/>
+              <!-- Central Pupil -->
+              <circle id="pupil" cx="200" cy="200" r="27" fill="#090304"/>
+
+              <!-- 3 Tomoe Sharingan -->
+              <g id="tomoeGroup">
+                <g transform="rotate(0 200 200)">
+                  <g transform="translate(200 112)">
+                    <circle cx="0" cy="0" r="13.5" fill="#090304"/>
+                    <path d="M 3 -13 C 17 -12 29 -2 34 11 C 23 4 14 5 5 11.5 Z" fill="#090304"/>
+                  </g>
+                </g>
+                <g transform="rotate(120 200 200)">
+                  <g transform="translate(200 112)">
+                    <circle cx="0" cy="0" r="13.5" fill="#090304"/>
+                    <path d="M 3 -13 C 17 -12 29 -2 34 11 C 23 4 14 5 5 11.5 Z" fill="#090304"/>
+                  </g>
+                </g>
+                <g transform="rotate(240 200 200)">
+                  <g transform="translate(200 112)">
+                    <circle cx="0" cy="0" r="13.5" fill="#090304"/>
+                    <path d="M 3 -13 C 17 -12 29 -2 34 11 C 23 4 14 5 5 11.5 Z" fill="#090304"/>
+                  </g>
+                </g>
+              </g>
+
+              <!-- Itachi's Mangekyo Sharingan -->
+              <g id="mangekyoGroup" opacity="0">
+                <g transform="translate(200 200)">
+                  <circle cx="0" cy="0" r="35" fill="#090304"/>
+                  <g transform="rotate(0)">
+                    <path d="M -29 -19 C -38 -78 -8 -134 48 -150 C 20 -111 18 -58 34 -14 Z" fill="#090304"/>
+                  </g>
+                  <g transform="rotate(120)">
+                    <path d="M -29 -19 C -38 -78 -8 -134 48 -150 C 20 -111 18 -58 34 -14 Z" fill="#090304"/>
+                  </g>
+                  <g transform="rotate(240)">
+                    <path d="M -29 -19 C -38 -78 -8 -134 48 -150 C 20 -111 18 -58 34 -14 Z" fill="#090304"/>
+                  </g>
+                  <circle cx="0" cy="0" r="16" fill="url(#mangekyoCoreGrad)" stroke="#090304" stroke-width="2"/>
+                  <circle cx="0" cy="0" r="6" fill="#090304"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Night Mist & Skyline Shadows -->
+      <div id="atmosphere">
+        <svg viewBox="0 0 1200 800" preserveAspectRatio="none">
+          <g id="shadowLayer">
+            <path id="shadow1" class="shadowShape" d="M-80 735 L80 685 L140 700 L220 650 L310 690 L430 665 L520 710 L690 670 L810 695 L930 645 L1080 690 L1280 660 L1280 860 -80 860Z"/>
+            <path id="shadow2" class="shadowShape" d="M-100 120 Q180 60 390 135 T840 90 T1320 155 L1320 -90 -100 -90Z"/>
+          </g>
+          <g id="fogLayer">
+            <path id="fog1" class="mist" d="M-220 545 C-10 435 140 610 360 510 S710 445 920 535 S1180 585 1460 460 L1460 920 -220 920Z"/>
+            <path id="fog2" class="mist dark" d="M-220 345 C40 270 180 385 390 305 S700 365 910 290 S1200 245 1440 360 C1180 415 920 340 660 405 C390 470 140 375 -220 420 Z"/>
+            <path id="fog3" class="mist" d="M-220 710 C60 600 240 740 480 655 S840 620 1060 695 S1270 615 1460 665 L1460 940 -220 940Z"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Katana Slashes & Blood Rain -->
+      <svg id="slashes" viewBox="0 0 1200 800" preserveAspectRatio="none">
+        <path id="slash1" d="M120 610 L1080 180" stroke-width="3.2"/>
+        <path id="slash2" d="M210 140 L990 640" stroke-width="2.4"/>
+        <path id="slash3" d="M60 420 L1140 310" stroke-width="1.8"/>
+      </svg>
+      <div id="rainLayer"></div>
+
+      <!-- Itachi Silhouette on Utility Pole -->
+      <div id="figure">
+        <svg id="itachiSvg" viewBox="0 0 600 640" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+          <!-- Power Wires -->
+          <g id="wires" fill="none" stroke="#08080b" stroke-width="2.6" opacity=".88">
+            <path d="M-260 486 Q-30 538 168 504"/>
+            <path d="M-260 522 Q-10 568 206 506"/>
+            <path d="M394 506 Q590 564 860 512"/>
+            <path d="M432 508 Q620 592 860 544"/>
+          </g>
+
+          <!-- Utility Pole & Cross-arm -->
+          <g id="pole" fill="#07070a">
+            <rect x="282" y="392" width="36" height="258"/>
+            <rect x="275" y="388" width="50" height="14" rx="2"/>
+            <rect x="138" y="520" width="324" height="15" rx="2"/>
+            <path d="M224 535 L282 580 L282 565 L240 535 Z"/>
+            <path d="M376 535 L318 580 L318 565 L360 535 Z"/>
+            <!-- Insulators -->
+            <rect x="163" y="502" width="10" height="19" rx="2"/>
+            <rect x="201" y="504" width="10" height="17" rx="2"/>
+            <rect x="389" y="504" width="10" height="17" rx="2"/>
+            <rect x="427" y="502" width="10" height="19" rx="2"/>
+            <!-- Pole rim highlight -->
+            <path d="M282 402 L282 640 M318 402 L318 640" stroke="#222533" stroke-width="1.2" opacity=".55"/>
+          </g>
+
+          <!-- Katana behind left shoulder -->
+          <g fill="#08080b" stroke="#222533" stroke-width=".9">
+            <path d="M262 294 L214 198 L223 194 L270 290 Z"/>
+            <path d="M220 227 L237 219" stroke="#1c1f2b" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M332 344 L360 390 L353 394 L326 348 Z"/>
+          </g>
+
+          <!-- Wind-blown Silky Hair & Headband Ribbon -->
+          <g id="hair" fill="#07070a">
+            <path id="hairStrand1" d="M284 208 C264 205, 240 218, 214 238 C206 244, 208 246, 217 241 C242 228, 264 218, 285 220 Z"/>
+            <path id="hairStrand2" d="M282 216 C264 217, 245 230, 224 249 C219 254, 222 256, 229 251 C247 238, 265 228, 283 227 Z"/>
+          </g>
+          <g id="ribbon" fill="#07070a">
+            <path id="ribbonStrand" d="M282 221 C258 225, 234 238, 202 257 C195 261, 198 263, 206 259 C236 245, 258 234, 283 229 Z"/>
+          </g>
+
+          <!-- Itachi Crouching Body Silhouette -->
+          <g id="itachiBody" fill="#07070a">
+            <!-- Left & Right Crouched Legs/Knees -->
+            <path d="M266 292 L222 318 Q206 338 222 362 Q242 385 278 380 L282 355 L264 338 Z"/>
+            <path d="M334 292 L378 318 Q394 338 378 362 Q358 385 322 380 L318 355 L336 338 Z"/>
+            <!-- Sandals gripping pole -->
+            <path d="M275 376 L296 376 L295 394 L274 391 Z"/>
+            <path d="M304 376 L325 376 L326 391 L305 394 Z"/>
+            <!-- Torso & ANBU Cloak -->
+            <path d="M254 263 Q238 282 238 320 L264 358 L286 382 L314 382 L336 358 L362 320 Q362 282 346 263 Q323 250 300 252 Q277 250 254 263 Z"/>
+            <!-- Smooth Head Crown & Silky Face-Framing Locks -->
+            <path d="M274 236 C273 206, 283 197, 300 197 C317 197, 327 206, 326 236 C327 248, 325 258, 319 264 C312 269, 305 270, 300 270 C295 270, 288 269, 281 264 C275 258, 273 248, 274 236 Z"/>
+            <path d="M277 216 C269 228, 270 245, 276 261 C279 267, 283 265, 283 257 C282 246, 281 235, 282 224 Z"/>
+            <path d="M323 216 C331 228, 330 245, 324 261 C321 267, 317 265, 317 257 C318 246, 319 235, 318 224 Z"/>
+          </g>
+
+          <!-- Piercing Eyes (White Moonlight -> Glowing Crimson Sharingan) -->
+          <g id="itachiEyes">
+            <g id="eyeWhiteGroup">
+              <path d="M286 234 L295 236 L287 238 Z" fill="#f7fbff"/>
+              <path d="M314 234 L305 236 L313 238 Z" fill="#f7fbff"/>
+            </g>
+            <g id="eyeRedGroup" opacity="0" filter="url(#eyeGlow)">
+              <path d="M285 234 L296 236 L287 238.5 Z" fill="#ff2a3f"/>
+              <path d="M315 234 L304 236 L313 238.5 Z" fill="#ff2a3f"/>
+              <circle cx="290.5" cy="236.2" r="2.2" fill="#ff9ca6"/>
+              <circle cx="309.5" cy="236.2" r="2.2" fill="#ff9ca6"/>
+            </g>
+          </g>
+
+          <!-- Crimson Blood Tear -->
+          <path id="bloodTear" opacity="0" d="M289 239 Q287 251 289.5 262 Q292 269 290 276 Q287.5 269 287.8 258 Z" fill="url(#tearGrad)" stroke="#ff5c6c" stroke-width=".6" filter="url(#eyeGlow)"/>
+        </svg>
+      </div>
+
+      <!-- Murder of Crows -->
+      <svg id="crows" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice"></svg>
+
+      <!-- Scroll-coupled Chapter Rail -->
+      <div id="rail">
+        <section class="chapter" style="top:0">
+          <div class="label">01 / <span>THE SILENT POLE</span></div>
+          <div class="bigtitle">SHADOW<br>ABOVE THE <i>CLAN.</i></div>
+          <div class="paperline a"></div>
+          <div class="paperline b"></div>
+          <div class="caption left">Beneath the pale moon, a shadow watches over the sleeping Uchiha district.</div>
+          <div class="caption right">満月の影<br>SHADOW OF THE FULL MOON</div>
+          <span class="jp-vertical">静寂の夜</span>
+        </section>
+
+        <section class="chapter" style="top:100vh">
+          <div class="label">02 / <span>AWAKENING THE SHARINGAN</span></div>
+          <div class="bigtitle">CRIMSON<br><i>TOMOE</i> TURN.</div>
+          <div class="paperline a"></div>
+          <div class="paperline b"></div>
+          <div class="caption right">Three tomoe spin in the dark — reflecting a fate already sealed.</div>
+          <div class="caption left">写輪眼<br>THREE TOMOE AWAKENED</div>
+          <span class="jp-vertical">赤い写輪眼</span>
+        </section>
+
+        <section class="chapter" style="top:200vh">
+          <div class="label">03 / <span>THE NIGHT OF SLAUGHTER</span></div>
+          <div class="bigtitle">BONDS<br><i>SEVERED.</i></div>
+          <div class="caption left">To protect the village from within the darkness, he severed every bond of blood.</div>
+          <div class="caption right">一族の抹殺<br>THE NIGHT OF SLAUGHTER</div>
+          <span class="jp-vertical">闇の中の刃</span>
+        </section>
+
+        <section class="chapter" style="top:300vh">
+          <div class="label">04 / <span>MANGEKYŌ — TSUKUYOMI</span></div>
+          <div class="bigtitle">REALM OF<br><i>TSUKUYOMI.</i></div>
+          <div class="caption right">In the realm of Tsukuyomi, a single second stretches into seventy-two hours of ash.</div>
+          <div class="caption left">万華鏡写輪眼<br>MANGEKYŌ AWAKENS</div>
+          <span class="jp-vertical">万華鏡写輪眼</span>
+        </section>
+
+        <section class="chapter" style="top:400vh">
+          <div class="label">05 / <span>TEARS OF BLOOD</span></div>
+          <div class="bigtitle">THE HEAVY<br><i>BURDEN.</i></div>
+          <div class="paperline a"></div>
+          <div class="paperline b"></div>
+          <div class="caption left">“Foolish little brother... hate me, detest me, and survive.”</div>
+          <div class="caption right">血の涙<br>TEARS OF BLOOD</div>
+          <span class="jp-vertical">孤独の道</span>
+        </section>
+
+        <section class="chapter" style="top:500vh">
+          <div class="redscreen"></div>
+          <div class="label">06 / <span>FORGIVE ME, SASUKE</span></div>
+          <span class="jp-vertical">また会う日まで</span>
+        </section>
+      </div>
+
+      <div id="curtain"></div>
+      <div id="last">
+        FORGIVE ME, SASUKE.
+        <span class="sub">許せサスケ — うちはイタチ · SCROLL UP TO REVISIT</span>
+      </div>
+    </div>
+
+    <div id="texture"></div>
+  </div>
+</main>
+
+<div id="guide">↓ SCROLL / SWIPE — AWAKEN THE SHARINGAN</div>
+<div id="meter">00% · MOONLIGHT</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const track=$('#track'),rail=$('#rail'),world=$('#world'),figure=$('#figure'),moonWrap=$('#moonWrap');
+const sharinganLayer=$('#sharinganLayer'),moonSurface=$('#moonSurface'),tomoeGroup=$('#tomoeGroup'),mangekyoGroup=$('#mangekyoGroup'),pupil=$('#pupil');
+const eyeWhiteGroup=$('#eyeWhiteGroup'),eyeRedGroup=$('#eyeRedGroup'),bloodTear=$('#bloodTear');
+const hairStrand1=$('#hairStrand1'),hairStrand2=$('#hairStrand2'),ribbonStrand=$('#ribbonStrand'),wires=$('#wires'),crowsEl=$('#crows');
+const crimsonSky=$('#crimsonSky'),tsukuyomiRealm=$('#tsukuyomiRealm'),slashes=$('#slashes'),rainLayer=$('#rainLayer');
+const curtain=$('#curtain'),last=$('#last'),bar=$('#bar'),meter=$('#meter');
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+
+// Generate radial iris fibers inside the Sharingan moon
+const fibersEl=$('#irisFibers');
+for(let i=0;i<36;i++){
+  const ang=(i*10)*Math.PI/180;
+  const x1=200+Math.cos(ang)*32,y1=200+Math.sin(ang)*32;
+  const x2=200+Math.cos(ang)*160,y2=200+Math.sin(ang)*160;
+  const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1',x1.toFixed(1));line.setAttribute('y1',y1.toFixed(1));
+  line.setAttribute('x2',x2.toFixed(1));line.setAttribute('y2',y2.toFixed(1));
+  fibersEl.appendChild(line);
+}
+
+// Generate murder of crows SVG silhouettes
+const crowData=[
+  {bx:180,by:170,s:.95,vx:-320,vy:-190,sp:1.2},
+  {bx:980,by:185,s:.85,vx:340,vy:-220,sp:1.4},
+  {bx:270,by:470,s:1.15,vx:-410,vy:-120,sp:1.1},
+  {bx:910,by:440,s:1.05,vx:420,vy:-150,sp:1.3},
+  {bx:440,by:120,s:.7,vx:-220,vy:-280,sp:1.6},
+  {bx:760,by:130,s:.78,vx:260,vy:-260,sp:1.5},
+  {bx:130,by:310,s:1.25,vx:520,vy:-95,sp:1.0},
+  {bx:1060,by:320,s:1.1,vx:-500,vy:-110,sp:1.15},
+  {bx:530,by:560,s:.88,vx:-290,vy:-340,sp:1.35},
+  {bx:690,by:545,s:.92,vx:310,vy:-310,sp:1.25}
+];
+const crowNodes=crowData.map((c,i)=>{
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.setAttribute('class','crow');
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d','M-28 -4 Q-12 -19 0 -3 Q12 -19 28 -4 Q12 -7 2 4 L0 11 L-2 4 Q-12 -7 -28 -4 Z');
+  g.appendChild(p);
+  crowsEl.appendChild(g);
+  return {g,p,c,i};
+});
+
+const fogPaths=['fog1','fog2','fog3'].map(id=>$('#'+id));
+let target=0,position=0,speed=0,wind=0,tailWind=0,phase=0,spinAngle=0;
+
+function eyeLabel(p){
+  if(p<.18)return 'MOONLIGHT';
+  if(p<.38)return 'SHARINGAN';
+  if(p<.56)return 'MASSACRE';
+  if(p<.75)return 'MANGEKYŌ';
+  if(p<.9)return 'TSUKUYOMI';
+  return 'FORGIVE ME';
+}
+
+function draw(){
+  const max=Math.max(1,track.offsetHeight-innerHeight);
+  target=clamp(-track.getBoundingClientRect().top/max,0,1);
+  const prev=position;
+  position+=(target-position)*.115;
+  const delta=position-prev;
+  speed=speed*.82+delta*.18;
+  const impulse=clamp(speed*4800,-34,34);
+  wind+=(impulse-wind)*.11;
+  tailWind+=(impulse*1.45-tailWind)*.075;
+  phase+=.016+Math.min(Math.abs(speed)*10,.03);
+  spinAngle+=.18+Math.abs(speed)*480;
+
+  // Continuous chapter rail
+  rail.style.transform=`translate3d(0,${-position*5*innerHeight}px,0)`;
+
+  // Sky transitions: pale night -> blood night -> Tsukuyomi realm
+  crimsonSky.style.opacity=String(smooth(.16,.38,position));
+  tsukuyomiRealm.style.opacity=String(smooth(.55,.74,position)*(1-smooth(.88,.97,position)));
+
+  // Moon -> 3-Tomoe Sharingan -> Mangekyo Sharingan morph
+  const sharinganIn=smooth(.15,.32,position);
+  const mangekyoIn=smooth(.55,.72,position);
+  const tomoeFade=1-mangekyoIn;
+  moonSurface.setAttribute('opacity',String((1-sharinganIn*.92).toFixed(3)));
+  sharinganLayer.setAttribute('opacity',String(sharinganIn.toFixed(3)));
+
+  // Rotate 3 Tomoe faster as user scrolls and compress gently into center as Mangekyo emerges
+  const baseTomoeRot=position*920+spinAngle*.45;
+  const tomoeScale=1-.42*mangekyoIn;
+  tomoeGroup.setAttribute('opacity',String(tomoeFade.toFixed(3)));
+  tomoeGroup.setAttribute('transform',`translate(200 200) rotate(${baseTomoeRot.toFixed(2)}) scale(${tomoeScale.toFixed(3)}) translate(-200 -200)`);
+  pupil.setAttribute('opacity',String(tomoeFade.toFixed(3)));
+
+  // Mangekyo pinwheel emerges and spins smoothly
+  const mangekyoRot=-160*(1-mangekyoIn)+position*540+spinAngle*.35;
+  const mangekyoScale=.45+.55*mangekyoIn;
+  mangekyoGroup.setAttribute('opacity',String(mangekyoIn.toFixed(3)));
+  mangekyoGroup.setAttribute('transform',`translate(200 200) rotate(${mangekyoRot.toFixed(2)}) scale(${mangekyoScale.toFixed(3)}) translate(-200 -200)`);
+
+  // Moon glow & zoom focus toward the Sharingan and Itachi's eyes
+  const eyeZoom=smooth(.52,.82,position);
+  const endFade=smooth(.84,.94,position);
+  const moonScale=1+.22*smooth(.22,.55,position)+.55*eyeZoom;
+  moonWrap.style.transform=`translate(-50%,-50%) scale(${moonScale.toFixed(3)})`;
+  moonWrap.style.opacity=String(1-endFade*.85);
+  const glowColor=sharinganIn>.25?`rgba(215,18,36,${(.35+.45*sharinganIn).toFixed(2)})`:'rgba(212,226,255,.35)';
+  moonWrap.style.filter=`drop-shadow(0 0 ${(38+36*sharinganIn).toFixed(0)}px ${glowColor})`;
+
+  // Itachi silhouette zoom toward his eyes & wind physics on hair/ribbon/wires
+  const figScale=1+.75*eyeZoom;
+  const figShiftY=-7.5*eyeZoom;
+  const swayX=Math.sin(position*18)*8-wind*.22;
+  figure.style.transform=`translate(calc(-50% + ${swayX.toFixed(1)}px),${figShiftY.toFixed(2)}vh) scale(${figScale.toFixed(3)})`;
+  figure.style.opacity=String(1-smooth(.82,.92,position));
+
+  const breeze=clamp(wind*.35,-10,10);
+  const w1=Math.sin(phase)*3.5+breeze*.45;
+  const w2=Math.sin(phase-1.1)*4.5+breeze*.65;
+  const w3=Math.cos(phase*.9)*3.8+breeze*.55;
+  hairStrand1.setAttribute('d',`M284 208 C264 ${(205+w1*.4).toFixed(1)}, 240 ${(218+w2*.7).toFixed(1)}, ${(214-breeze*.4).toFixed(1)} ${(238+w2).toFixed(1)} C${(206-breeze*.4).toFixed(1)} ${(244+w2).toFixed(1)}, ${(208-breeze*.4).toFixed(1)} ${(246+w2).toFixed(1)}, ${(217-breeze*.3).toFixed(1)} ${(241+w2*.9).toFixed(1)} C242 ${(228+w2*.5).toFixed(1)}, 264 ${(218+w1*.3).toFixed(1)}, 285 220 Z`);
+  hairStrand2.setAttribute('d',`M282 216 C264 ${(217+w1*.4).toFixed(1)}, 245 ${(230+w3*.7).toFixed(1)}, ${(224-breeze*.35).toFixed(1)} ${(249+w3).toFixed(1)} C${(219-breeze*.35).toFixed(1)} ${(254+w3).toFixed(1)}, ${(222-breeze*.35).toFixed(1)} ${(256+w3).toFixed(1)}, ${(229-breeze*.25).toFixed(1)} ${(251+w3*.9).toFixed(1)} C247 ${(238+w3*.5).toFixed(1)}, 265 ${(228+w1*.3).toFixed(1)}, 283 227 Z`);
+  ribbonStrand.setAttribute('d',`M282 221 C258 ${(225+w1*.5).toFixed(1)}, 234 ${(238+w2*.8).toFixed(1)}, ${(202-breeze*.5).toFixed(1)} ${(257+w2*1.15).toFixed(1)} C${(195-breeze*.5).toFixed(1)} ${(261+w2*1.15).toFixed(1)}, ${(198-breeze*.5).toFixed(1)} ${(263+w2*1.15).toFixed(1)}, ${(206-breeze*.4).toFixed(1)} ${(259+w2*1.05).toFixed(1)} C236 ${(245+w2*.65).toFixed(1)}, 258 ${(234+w1*.35).toFixed(1)}, 283 229 Z`);
+  wires.setAttribute('transform',`translate(0 ${(Math.sin(phase*.9)*2.5+wind*.18).toFixed(2)})`);
+
+  // Itachi eyes transition: cold white slits -> glowing crimson Sharingan + blood tear
+  const eyeRedAlpha=smooth(.16,.34,position);
+  eyeWhiteGroup.setAttribute('opacity',String((1-eyeRedAlpha).toFixed(3)));
+  eyeRedGroup.setAttribute('opacity',String(eyeRedAlpha.toFixed(3)));
+  const tearProgress=smooth(.64,.82,position);
+  bloodTear.style.opacity=String(tearProgress.toFixed(3));
+  bloodTear.setAttribute('transform',`translate(289 239) scale(1 ${(0.35+tearProgress*.95).toFixed(2)}) translate(-289 -239)`);
+
+  // Fog & Skyline atmosphere
+  const a=position*20,drift=wind*1.9;
+  fogPaths.forEach((p,i)=>{
+    const yy=Math.sin(a*.65+i*1.7+phase*.4)*18;
+    const xx=Math.sin(a+i*2.1+phase*.7)*46+drift*(i%2?-.75:1);
+    p.setAttribute('transform',`translate(${xx.toFixed(2)} ${yy.toFixed(2)}) scale(${(1+Math.sin(a*.3+i)*.035).toFixed(3)} 1)`);
+  });
+  $('#shadowLayer').setAttribute('transform',`translate(${(-drift*.45).toFixed(2)} ${(Math.sin(a*.45)*10).toFixed(2)})`);
+  $('#fogNoise').setAttribute('baseFrequency',`${(.007+Math.abs(wind)*.00022).toFixed(4)} ${(.019+Math.abs(wind)*.00014).toFixed(4)}`);
+  $('#fogDisplace').setAttribute('scale',String((24+Math.abs(wind)*1.6+Math.sin(phase)*6).toFixed(1)));
+  $('#shadowDisplace').setAttribute('scale',String((12+Math.abs(wind)*1.1).toFixed(1)));
+  $('#moonDisplace').setAttribute('scale',String((4+Math.abs(wind)*.6+Math.sin(phase*.7)*2).toFixed(1)));
+  $('#atmosphere').style.opacity=String(1-endFade);
+
+  // Katana slashes & crimson rain during massacre chapter
+  const massacrePulse=smooth(.34,.44,position)*(1-smooth(.56,.66,position));
+  slashes.style.opacity=String((massacrePulse*(.55+.45*Math.abs(Math.sin(position*45+phase)))).toFixed(3));
+  rainLayer.style.opacity=String((smooth(.32,.46,position)*(1-smooth(.86,.95,position))*.65).toFixed(3));
+  rainLayer.style.transform=`translate3d(${(wind*1.5).toFixed(1)}px,${((phase*90)%60).toFixed(1)}px,0)`;
+
+  // Murder of crows scatter & spiral across screen
+  const scatter=smooth(.3,.6,position)+smooth(.75,.95,position)*.9;
+  crowNodes.forEach(({g,p,c,i})=>{
+    const flap=Math.sin(phase*3.4+i*1.3)*5.5;
+    p.setAttribute('d',`M-28 ${(-4+flap).toFixed(1)} Q-12 ${(-19-flap).toFixed(1)} 0 -3 Q12 ${(-19-flap).toFixed(1)} 28 ${(-4+flap).toFixed(1)} Q12 -7 2 4 L0 11 L-2 4 Q-12 -7 -28 ${(-4+flap).toFixed(1)} Z`);
+    const x=c.bx+c.vx*scatter+Math.sin(phase*.9+i)*26+drift*(i%2?.7:-.8);
+    const y=c.by+c.vy*scatter+Math.cos(phase*1.1+i)*20;
+    const rot=Math.sin(phase+i)*14+wind*.35;
+    const alpha=clamp((smooth(.08,.24,position)+scatter*.6)*(1-smooth(.92,.99,position)),0,.92);
+    g.setAttribute('opacity',alpha.toFixed(3));
+    g.setAttribute('transform',`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(c.s*(1+scatter*.35)).toFixed(2)})`);
+  });
+
+  // Ending crow curtain & final quote
+  curtain.style.opacity=String(smooth(.84,.94,position).toFixed(3));
+  last.style.opacity=String(smooth(.93,.985,position).toFixed(3));
+
+  // Top progress bar & meter HUD
+  bar.style.width=(position*100)+'%';
+  meter.textContent=`${Math.round(position*100).toString().padStart(2,'0')}% · ${eyeLabel(position)}`;
+
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+$('#enter').onclick=()=>$('#overlay').classList.add('hide');
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cinematic Scroll Web Skill — Showcase Gallery</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#08090e;
+  --panel:#10121b;
+  --ink:#f1ebe1;
+  --muted:#a9a39b;
+  --red:#d11f35;
+  --border:rgba(255,255,255,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at 50% 0%,#26070f 0%,#08090e 52%,#050608 100%);
+  color:var(--ink);
+  font-family:'DM Mono',monospace;
+  line-height:1.65;
+  padding:48px 6vw 80px;
+}
+.wrap{max-width:1080px;margin:0 auto}
+.eyebrow{
+  font-size:11px;
+  letter-spacing:.26em;
+  color:var(--red);
+  text-transform:uppercase;
+}
+h1{
+  font-family:'Cinzel',Georgia,serif;
+  font-weight:400;
+  font-size:clamp(38px,6vw,76px);
+  line-height:.98;
+  letter-spacing:-.03em;
+  margin:14px 0 18px;
+}
+.lead{
+  max-width:720px;
+  font-size:13px;
+  color:var(--muted);
+  margin:0 0 38px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+  margin-bottom:46px;
+}
+.card{
+  background:rgba(16,18,27,.88);
+  border:1px solid var(--border);
+  border-top:2px solid var(--red);
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:16px;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(209,31,53,.65);
+  box-shadow:0 16px 36px rgba(0,0,0,.6);
+}
+.tag{
+  font-size:10px;
+  letter-spacing:.2em;
+  color:var(--red);
+}
+.card h2{
+  font-family:'Cinzel',Georgia,serif;
+  font-weight:400;
+  font-size:22px;
+  margin:6px 0 8px;
+}
+.card p{
+  margin:0;
+  font-size:11.5px;
+  color:var(--muted);
+}
+.btn{
+  display:inline-block;
+  text-decoration:none;
+  color:var(--ink);
+  border:1px solid rgba(255,255,255,.35);
+  padding:10px 16px;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-align:center;
+  transition:background .2s,border-color .2s;
+}
+.btn:hover{
+  background:var(--red);
+  border-color:var(--red);
+}
+.docs{
+  background:rgba(16,18,27,.72);
+  border:1px solid var(--border);
+  padding:24px;
+}
+.docs h3{
+  font-family:'Cinzel',Georgia,serif;
+  font-weight:400;
+  font-size:20px;
+  margin:0 0 12px;
+}
+.links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.links a{
+  color:var(--ink);
+  text-decoration:none;
+  border:1px solid var(--border);
+  padding:8px 14px;
+  font-size:11px;
+}
+.links a:hover{border-color:var(--red);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">ANTIGRAVITY SKILL · ZERO-DEPENDENCY SCROLL ENGINE</div>
+  <h1>CINEMATIC SCROLL<br>WEB SKILL.</h1>
+  <p class="lead">
+    60fps continuous scroll-coupled storytelling &amp; high-converting e-commerce landing pages built with vanilla HTML, CSS, and reactive SVG animation.
+  </p>
+
+  <section class="grid">
+    <article class="card">
+      <div>
+        <div class="tag">01 / INTERACTIVE MANGA</div>
+        <h2>Uchiha Itachi — The Red Sharingan</h2>
+        <p>Full moon to 3-Tomoe Sharingan to Mangekyō morph, smooth Bézier hair physics, scattering crows, slashes, and crimson blood tear.</p>
+      </div>
+      <a class="btn" href="./demos/itachi-sharingan/index.html">OPEN DEMO ↗</a>
+    </article>
+
+    <article class="card">
+      <div>
+        <div class="tag">02 / E-COMMERCE LAUNCH</div>
+        <h2>KRONOS ZERO-1 Showcase</h2>
+        <p>4-layer exploded watch core, macro sapphire zoom, live colorway swatches, floating spec callouts, and sticky conversion dock.</p>
+      </div>
+      <a class="btn" href="./demos/kronos-ecommerce/index.html">OPEN DEMO ↗</a>
+    </article>
+
+    <article class="card">
+      <div>
+        <div class="tag">03 / EDITORIAL STORY</div>
+        <h2>THE RED SUN (v3)</h2>
+        <p>Continuous 6-chapter scroll rail with reactive SVG turbulence fog displacement, dynamic wind cloth physics, and lunar drift.</p>
+      </div>
+      <a class="btn" href="./demos/red-sun/index.html">OPEN DEMO ↗</a>
+    </article>
+
+    <article class="card">
+      <div>
+        <div class="tag">04 / SCAFFOLD</div>
+        <h2>Starter Template</h2>
+        <p>Clean, minimal 6-stage continuous-scroll engine ready to fork for brand stories or product drops.</p>
+      </div>
+      <a class="btn" href="./demos/starter/index.html">OPEN DEMO ↗</a>
+    </article>
+  </section>
+
+  <section class="docs">
+    <h3>Skill Package &amp; Guides</h3>
+    <div class="links">
+      <a href="./cinematic-scroll-web/SKILL.md">SKILL.md</a>
+      <a href="./cinematic-scroll-web/references/physics-and-svg-engine.md">Physics &amp; SVG Engine</a>
+      <a href="./cinematic-scroll-web/references/ecommerce-adaptation-guide.md">E-Commerce Adaptation Guide</a>
+      <a href="./README.md">README.md</a>
+    </div>
+  </section>
+</div>
+</body>
+</html>

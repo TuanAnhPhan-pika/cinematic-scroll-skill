@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KRONOS ZERO-1 — Scroll-Driven Product Showcase</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#090a0f;
+  --paper:#f2ece2;
+  --accent:#d11f35;
+  --accent-glow:rgba(209,31,53,.45);
+  --metal:#c8cdd8;
+}
+*{box-sizing:border-box}
+html{scrollbar-width:thin}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--paper);
+  font-family:'Cinzel',Georgia,serif;
+  overflow-x:hidden;
+}
+#track{height:700vh;position:relative}
+#viewport{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:hidden;
+  background:radial-gradient(circle at 50% 44%,#1c2130 0%,#0b0c12 58%,#050608 100%);
+}
+#ambientGlow{
+  position:absolute;
+  left:50%;
+  top:45%;
+  width:min(72vw,72vh);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,var(--accent-glow) 0%,transparent 68%);
+  pointer-events:none;
+  opacity:.35;
+}
+#world{
+  position:absolute;
+  inset:0;
+  isolation:isolate;
+  pointer-events:none;
+}
+#watchWrap{
+  position:absolute;
+  left:50%;
+  top:45%;
+  width:min(76vw,58vh);
+  aspect-ratio:420/480;
+  transform:translate(-50%,-50%);
+  transform-origin:50% 50%;
+  will-change:transform,opacity,filter;
+  filter:drop-shadow(0 28px 50px rgba(0,0,0,.85));
+}
+#watchSvg{width:100%;height:100%;overflow:visible}
+#rail{position:absolute;inset:0;z-index:15;pointer-events:none;will-change:transform}
+.chapter{position:absolute;left:0;width:100%;height:100vh}
+.label{
+  position:absolute;
+  left:6%;
+  top:10%;
+  font:11px 'DM Mono',monospace;
+  letter-spacing:.24em;
+  color:#d9d2c7;
+}
+.label span{color:var(--accent)}
+.bigtitle{
+  position:absolute;
+  left:6%;
+  top:16%;
+  font-size:clamp(34px,5.5vw,82px);
+  line-height:.94;
+  letter-spacing:-.04em;
+  text-shadow:0 4px 28px rgba(0,0,0,.95);
+}
+.bigtitle i{color:var(--accent);font-style:normal}
+.caption{
+  position:absolute;
+  background:rgba(12,13,18,.86);
+  border:1px solid rgba(255,255,255,.16);
+  border-left:3px solid var(--accent);
+  box-shadow:0 12px 32px rgba(0,0,0,.6);
+  padding:14px 18px;
+  max-width:270px;
+  font:11px/1.7 'DM Mono',monospace;
+  backdrop-filter:blur(6px);
+}
+.caption strong{display:block;font-size:12px;letter-spacing:.12em;margin-bottom:4px;color:#fff}
+.caption.left{left:6%;bottom:18%}
+.caption.right{right:6%;top:20%}
+#curtain{
+  position:absolute;
+  inset:0;
+  z-index:18;
+  opacity:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 45%,var(--accent-glow) 0%,#090a0e 76%);
+}
+#finalOffer{
+  position:absolute;
+  left:50%;
+  top:46%;
+  transform:translate(-50%,-50%);
+  width:min(90vw,680px);
+  text-align:center;
+  z-index:19;
+  opacity:0;
+  pointer-events:none;
+}
+#finalOffer h2{font-size:clamp(30px,5vw,70px);margin:0;line-height:1;font-weight:400}
+#finalOffer p{font:12px/1.8 'DM Mono',monospace;letter-spacing:.18em;color:#d8d0c5;margin:14px 0 0}
+#bar{
+  position:fixed;
+  z-index:45;
+  top:0;
+  left:0;
+  height:3px;
+  width:0;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
+}
+#topNav{
+  position:fixed;
+  z-index:40;
+  top:18px;
+  right:4vw;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font:10px 'DM Mono',monospace;
+  letter-spacing:.14em;
+}
+.swatch-group{
+  display:flex;
+  gap:8px;
+  background:rgba(12,13,18,.82);
+  border:1px solid rgba(255,255,255,.16);
+  padding:6px 10px;
+  border-radius:999px;
+  backdrop-filter:blur(6px);
+}
+.swatch{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,.45);
+  cursor:pointer;
+  padding:0;
+  margin:0;
+}
+.swatch.active{border-color:#fff;transform:scale(1.16)}
+#buyDock{
+  position:fixed;
+  z-index:40;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+  width:min(92vw,760px);
+  background:rgba(12,13,18,.9);
+  border:1px solid rgba(255,255,255,.18);
+  padding:12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  backdrop-filter:blur(10px);
+  font:11px 'DM Mono',monospace;
+}
+#buyDock .meta{display:flex;flex-direction:column;gap:2px}
+#buyDock .name{font-size:12px;letter-spacing:.14em;color:#fff}
+#buyDock .price{color:var(--accent);font-weight:500}
+#buyBtn{
+  background:var(--accent);
+  color:#fff;
+  border:0;
+  padding:11px 22px;
+  cursor:pointer;
+  font:11px 'DM Mono',monospace;
+  letter-spacing:.16em;
+  white-space:nowrap;
+}
+#buyBtn:hover{filter:brightness(1.12)}
+#toast{
+  position:fixed;
+  z-index:60;
+  left:50%;
+  bottom:86px;
+  transform:translate(-50%,10px);
+  background:#151822;
+  border:1px solid var(--accent);
+  padding:10px 18px;
+  font:11px 'DM Mono',monospace;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s,transform .25s;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#overlay{
+  position:fixed;
+  z-index:55;
+  inset:0;
+  background:radial-gradient(circle at 50% 45%,#20131a 0%,#08090d 70%);
+  display:grid;
+  place-content:center;
+  text-align:center;
+  padding:24px;
+  transition:opacity .6s,visibility .6s;
+}
+#overlay.hide{opacity:0;visibility:hidden}
+#overlay h1{font-size:clamp(42px,9vw,116px);font-weight:400;line-height:.92;margin:12px 0}
+#overlay p{font:11px/1.8 'DM Mono',monospace;letter-spacing:.2em;color:#d7d0c5}
+#enter{
+  background:transparent;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.6);
+  padding:15px 34px;
+  margin:22px auto 0;
+  cursor:pointer;
+  font:11px 'DM Mono',monospace;
+  letter-spacing:.2em;
+}
+#enter:hover{background:var(--accent);border-color:var(--accent)}
+@media(max-width:650px){
+  #watchWrap{width:76vw;top:43%}
+  .caption{max-width:175px;font-size:9.5px;padding:10px 12px}
+  .caption.left{bottom:96px;left:4%}
+  .caption.right{top:13%;right:4%}
+  #buyDock{padding:10px 12px;bottom:12px}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div id="overlay">
+  <p>LIMITED EDITION // MECHANICAL CHRONOGRAPH</p>
+  <h1>KRONOS <span style="color:var(--accent)">ZERO-1</span></h1>
+  <p>CUỘN XUỐNG ĐỂ KHÁM PHÁ BỘ MÁY &amp; CHỌN PHIÊN BẢN MÀU</p>
+  <button id="enter">KHÁM PHÁ SẢN PHẨM ↓</button>
+</div>
+
+<div id="topNav">
+  <span>PHIÊN BẢN:</span>
+  <div class="swatch-group">
+    <button class="swatch active" title="Crimson Edition" data-name="Crimson Blood" data-price="4.890.000 ₫" data-accent="#d11f35" data-glow="rgba(209,31,53,.45)" style="background:#d11f35"></button>
+    <button class="swatch" title="Obsidian Gold" data-name="Obsidian Gold" data-price="5.290.000 ₫" data-accent="#d4a145" data-glow="rgba(212,161,69,.42)" style="background:#d4a145"></button>
+    <button class="swatch" title="Glacier Titanium" data-name="Glacier Titanium" data-price="4.690.000 ₫" data-accent="#3b9be8" data-glow="rgba(59,155,232,.42)" style="background:#3b9be8"></button>
+  </div>
+</div>
+
+<main id="track">
+  <div id="viewport">
+    <div id="ambientGlow"></div>
+    <div id="world">
+      <div id="watchWrap">
+        <svg id="watchSvg" viewBox="0 0 420 480" xmlns="http://www.w3.org/2000/svg">
+          <!-- Back Case & Straps -->
+          <g id="layerBack">
+            <rect x="155" y="10" width="110" height="105" rx="14" fill="#171922" stroke="#2c3142" stroke-width="2"/>
+            <rect x="155" y="365" width="110" height="105" rx="14" fill="#171922" stroke="#2c3142" stroke-width="2"/>
+            <circle cx="210" cy="240" r="146" fill="#11131a" stroke="#2a2f3f" stroke-width="4"/>
+          </g>
+
+          <!-- Mechanical Core & Rotating Gears -->
+          <g id="layerCore">
+            <circle cx="210" cy="240" r="124" fill="#0b0c10" stroke="var(--metal)" stroke-width="3"/>
+            <g id="gearGroup">
+              <circle cx="210" cy="240" r="92" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="10 8" opacity=".85"/>
+              <circle cx="210" cy="240" r="64" fill="none" stroke="var(--metal)" stroke-width="1.5" stroke-dasharray="4 6" opacity=".6"/>
+              <path d="M210 132 L216 154 L204 154 Z M210 348 L216 326 L204 326 Z M102 240 L124 246 L124 234 Z M318 240 L296 246 L296 234 Z" fill="var(--accent)"/>
+            </g>
+            <g id="handsGroup">
+              <line x1="210" y1="240" x2="210" y2="156" stroke="#f2ece2" stroke-width="4" stroke-linecap="round"/>
+              <line x1="210" y1="240" x2="274" y2="272" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="210" cy="240" r="9" fill="var(--accent)" stroke="#090a0f" stroke-width="2"/>
+            </g>
+          </g>
+
+          <!-- Bezel Ring -->
+          <g id="layerRing">
+            <circle cx="210" cy="240" r="136" fill="none" stroke="#232836" stroke-width="16"/>
+            <circle cx="210" cy="240" r="136" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="2 20" opacity=".9"/>
+          </g>
+
+          <!-- Sapphire Glass Specular Dome -->
+          <g id="layerGlass">
+            <circle cx="210" cy="240" r="126" fill="none" stroke="rgba(255,255,255,.26)" stroke-width="2"/>
+            <path d="M126 168 Q190 120 266 152" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="rail">
+        <section class="chapter" style="top:0">
+          <div class="label">01 / <span>HERO SILHOUETTE</span></div>
+          <div class="bigtitle">PRECISION<br>IN <i>MOTION.</i></div>
+          <div class="caption left"><strong>THÉP TITANIUM 316L</strong>Khung vỏ cắt CNC siêu mỏng 8.4mm kháng nước 10 ATM.</div>
+        </section>
+
+        <section class="chapter" style="top:100vh">
+          <div class="label">02 / <span>AUTOMATIC CALIBER</span></div>
+          <div class="caption right"><strong>28.800 VPH CORE</strong>Bánh răng và kim xoay đồng bộ trực tiếp theo nhịp cuộn trang.</div>
+        </section>
+
+        <section class="chapter" style="top:200vh">
+          <div class="label">03 / <span>EXPLODED ARCHITECTURE</span></div>
+          <div class="bigtitle">4 LAYERS.<br><i>ZERO</i> COMPROMISE.</div>
+          <div class="caption left"><strong>TÁCH LỚP CẤU TRÚC</strong>Mặt kính Sapphire, vòng Bezel, bộ máy cơ và thân vỏ tách lớp mượt mà khi cuộn.</div>
+        </section>
+
+        <section class="chapter" style="top:300vh">
+          <div class="label">04 / <span>MACRO CRAFTSMANSHIP</span></div>
+          <div class="caption right"><strong>KÍNH SAPPHIRE PHỦ AR</strong>Zoom cận cảnh độ hoàn thiện chải xước và mặt số chống lóa hai lớp.</div>
+        </section>
+
+        <section class="chapter" style="top:400vh">
+          <div class="label">05 / <span>CHOOSE YOUR EDITION</span></div>
+          <div class="caption left"><strong>3 PHỐI MÀU ĐỘC BẢN</strong>Đổi màu ở góc trên phải để xem trực tiếp trên đồng hồ.</div>
+        </section>
+
+        <section class="chapter" style="top:500vh">
+          <div class="label">06 / <span>LIMITED RELEASE</span></div>
+        </section>
+      </div>
+
+      <div id="curtain"></div>
+      <div id="finalOffer">
+        <h2>SỞ HỮU NGAY KRONOS ZERO-1</h2>
+        <p>BẢO HÀNH 5 NĂM · MIỄN PHÍ GIAO HÀNG TOÀN QUỐC · ĐỔI TRẢ 30 NGÀY</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="buyDock">
+  <div class="meta">
+    <span class="name" id="variantName">KRONOS ZERO-1 — Crimson Blood</span>
+    <span class="price" id="variantPrice">4.890.000 ₫</span>
+  </div>
+  <button id="buyBtn">THÊM VÀO GIỎ HÀNG ↗</button>
+</div>
+<div id="toast">Đã thêm vào giỏ hàng!</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const track=$('#track'),rail=$('#rail'),watchWrap=$('#watchWrap'),ambientGlow=$('#ambientGlow');
+const layerBack=$('#layerBack'),layerRing=$('#layerRing'),layerGlass=$('#layerGlass');
+const gearGroup=$('#gearGroup'),handsGroup=$('#handsGroup'),curtain=$('#curtain'),finalOffer=$('#finalOffer'),bar=$('#bar');
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const smooth=(a,b,x)=>{const t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+
+let target=0,position=0,speed=0,phase=0;
+
+function draw(){
+  const max=Math.max(1,track.offsetHeight-innerHeight);
+  target=clamp(-track.getBoundingClientRect().top/max,0,1);
+  const prev=position;
+  position+=(target-position)*.12;
+  speed=speed*.82+(position-prev)*.18;
+  phase+=.016+Math.min(Math.abs(speed)*10,.03);
+
+  rail.style.transform=`translate3d(0,${-position*5*innerHeight}px,0)`;
+
+  // Exploded engineering view in Chapter 3, smoothly reassembling before Macro Zoom
+  const explode=smooth(.3,.48,position)*(1-smooth(.56,.7,position));
+  layerBack.setAttribute('transform',`translate(0 ${(explode*38).toFixed(1)})`);
+  layerRing.setAttribute('transform',`translate(0 ${(-explode*26).toFixed(1)})`);
+  layerGlass.setAttribute('transform',`translate(0 ${(-explode*52).toFixed(1)})`);
+
+  // Gear & hands rotation coupled to scroll
+  gearGroup.setAttribute('transform',`translate(210 240) rotate(${(position*540+phase*12).toFixed(1)}) translate(-210 -240)`);
+  handsGroup.setAttribute('transform',`translate(210 240) rotate(${(position*1080).toFixed(1)}) translate(-210 -240)`);
+
+  // Macro zoom in Chapter 4 & fade into offer in Chapter 6
+  const macroZoom=1+.62*smooth(.54,.76,position)-.35*smooth(.82,.94,position);
+  watchWrap.style.transform=`translate(-50%,-50%) scale(${macroZoom.toFixed(3)})`;
+  watchWrap.style.opacity=String((1-smooth(.86,.95,position)).toFixed(3));
+  ambientGlow.style.opacity=String((.3+.45*smooth(.18,.6,position)).toFixed(3));
+
+  curtain.style.opacity=String(smooth(.84,.94,position).toFixed(3));
+  finalOffer.style.opacity=String(smooth(.92,.98,position).toFixed(3));
+  bar.style.width=(position*100)+'%';
+
+  requestAnimationFrame(draw);
+}
+
+requestAnimationFrame(draw);
+$('#enter').onclick=()=>$('#overlay').classList.add('hide');
+
+document.querySelectorAll('.swatch').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.swatch').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const r=document.documentElement.style;
+    r.setProperty('--accent',btn.dataset.accent);
+    r.setProperty('--accent-glow',btn.dataset.glow);
+    $('#variantName').textContent=`KRONOS ZERO-1 — ${btn.dataset.name}`;
+    $('#variantPrice').textContent=btn.dataset.price;
+  };
+});
+
+let toastTimer;
+$('#buyBtn').onclick=()=>{
+  const t=$('#toast');
+  t.textContent=`Đã thêm ${$('#variantName').textContent} (${$('#variantPrice').textContent}) vào giỏ!`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
+};
+</script>
+</body>
+</html>
