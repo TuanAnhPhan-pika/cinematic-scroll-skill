@@ -72,13 +72,11 @@ flowchart TD
 
 ## 🚀 Installation (Use in Any Project or Globally)
 
-> Replace `<YOUR_USERNAME>/<YOUR_REPO>` with your GitHub repository slug after publishing.
-
 ### Option A — Global Install (Works Across All Projects on Your Machine)
 
 **Windows (PowerShell):**
 ```powershell
-git clone https://github.com/<YOUR_USERNAME>/<YOUR_REPO>.git "$env:TEMP\cinematic-scroll-skill"
+git clone https://github.com/TuanAnhPhan-pika/cinematic-scroll-skill.git "$env:TEMP\cinematic-scroll-skill"
 New-Item -ItemType Directory -Force -Path "$HOME\.gemini\config\skills" | Out-Null
 Copy-Item -Recurse -Force "$env:TEMP\cinematic-scroll-skill\skills\cinematic-scroll-web" "$HOME\.gemini\config\skills\"
 Remove-Item -Recurse -Force "$env:TEMP\cinematic-scroll-skill"
@@ -86,7 +84,7 @@ Remove-Item -Recurse -Force "$env:TEMP\cinematic-scroll-skill"
 
 **macOS / Linux (Bash):**
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/<YOUR_REPO>.git /tmp/cinematic-scroll-skill \
+git clone https://github.com/TuanAnhPhan-pika/cinematic-scroll-skill.git /tmp/cinematic-scroll-skill \
   && mkdir -p ~/.gemini/config/skills \
   && cp -r /tmp/cinematic-scroll-skill/skills/cinematic-scroll-web ~/.gemini/config/skills/ \
   && rm -rf /tmp/cinematic-scroll-skill
@@ -97,7 +95,7 @@ git clone https://github.com/<YOUR_USERNAME>/<YOUR_REPO>.git /tmp/cinematic-scro
 **Windows (PowerShell):**
 ```powershell
 New-Item -ItemType Directory -Force -Path ".agents\skills" | Out-Null
-git clone https://github.com/<YOUR_USERNAME>/<YOUR_REPO>.git "$env:TEMP\cinematic-scroll-skill"
+git clone https://github.com/TuanAnhPhan-pika/cinematic-scroll-skill.git "$env:TEMP\cinematic-scroll-skill"
 Copy-Item -Recurse -Force "$env:TEMP\cinematic-scroll-skill\skills\cinematic-scroll-web" ".agents\skills\"
 Remove-Item -Recurse -Force "$env:TEMP\cinematic-scroll-skill"
 ```
@@ -105,7 +103,7 @@ Remove-Item -Recurse -Force "$env:TEMP\cinematic-scroll-skill"
 **macOS / Linux (Bash):**
 ```bash
 mkdir -p .agents/skills \
-  && git clone https://github.com/<YOUR_USERNAME>/<YOUR_REPO>.git /tmp/cinematic-scroll-skill \
+  && git clone https://github.com/TuanAnhPhan-pika/cinematic-scroll-skill.git /tmp/cinematic-scroll-skill \
   && cp -r /tmp/cinematic-scroll-skill/skills/cinematic-scroll-web .agents/skills/ \
   && rm -rf /tmp/cinematic-scroll-skill
 ```
